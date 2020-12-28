@@ -46,12 +46,16 @@ public class Test {
 //        PrivateKey privateKey1 = certificateGenerator.generatePrivateKey(keypair);
 //
 //        javaKeyStore.setKeyEntry("entry2",privateKey1,keyPass, new Certificate[]{certificate1});
+//
+//        javaKeyStore.saveKeyStore();
 
         for(Certificate cert : javaKeyStore.getCertificateList()){
             X509Certificate x509Certificate = (X509Certificate) cert;
 //            System.out.println(cert);
             String cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
-            System.out.println(cn);
+            String on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
+            String date = x509Certificate.getNotAfter().toString();
+            System.out.println(cn + "     " + on + "     " +date);
         }
 
         System.out.println(javaKeyStore.getCertificateList().size());

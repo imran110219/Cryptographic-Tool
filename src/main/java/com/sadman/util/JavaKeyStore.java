@@ -47,6 +47,13 @@ public class JavaKeyStore {
         keyStore.load(new FileInputStream(keyStoreName), pwdArray);
     }
 
+    public void saveKeyStore() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+        char[] pwdArray = keyStorePassword.toCharArray();
+        FileOutputStream fos = new FileOutputStream(keyStoreName);
+        keyStore.store(fos, pwdArray);
+        fos.close();
+    }
+
     void setEntry(String alias, KeyStore.SecretKeyEntry secretKeyEntry, KeyStore.ProtectionParameter protectionParameter) throws KeyStoreException {
         keyStore.setEntry(alias, secretKeyEntry, protectionParameter);
     }

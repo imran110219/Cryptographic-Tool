@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 /**
  * @author Sadman
  */
-public class Main extends Application {
+public class                                                                                                                       Main extends Application {
     private double x, y;
 
     @Override
