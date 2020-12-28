@@ -1,4 +1,4 @@
-package com.sadman.controller;
+package com.sadman;
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
