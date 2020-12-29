@@ -1,6 +1,6 @@
 package com.sadman.controller;
 
-import com.sadman.controller.model.CertificateInfo;
+import com.sadman.model.CertificateInfo;
 import com.sadman.util.JavaKeyStore;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,7 +29,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -60,20 +59,44 @@ public class CertificateController implements Initializable {
         try {
             javaKeyStore = new JavaKeyStore("PKCS12","123456", "JavaKeyStore.jks");
             javaKeyStore.loadKeyStore();
-            for(Certificate cert : javaKeyStore.getCertificateList()){
-                X509Certificate x509Certificate = (X509Certificate) cert;
-//            System.out.println(cert);
-                String cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
-                String on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
+
+            Map<String, Certificate> certificateMap = javaKeyStore.getCertificateMap();
+            certificateMap.forEach((k,v)-> {
+                X509Certificate x509Certificate = (X509Certificate) v;
+                String cn = null;
+                String on = null;
+                try {
+                    cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
+                    on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 String date = x509Certificate.getNotAfter().toString();
                 System.out.println(cn + "     " + on + "     " +date);
                 List<String> x = new ArrayList<String>();
                 CertificateInfo certificateInfo = new CertificateInfo();
+                certificateInfo.setAliasName(k);
                 certificateInfo.setUserName(cn);
                 certificateInfo.setCompanyName(on);
                 certificateInfo.setValidDate(date);
                 certificates.add(certificateInfo);
-            }
+            });
+
+//            for(Certificate cert : javaKeyStore.getCertificateList()){
+//                X509Certificate x509Certificate = (X509Certificate) cert;
+////            System.out.println(cert);
+//                String an = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
+//                String cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
+//                String on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
+//                String date = x509Certificate.getNotAfter().toString();
+//                System.out.println(cn + "     " + on + "     " +date);
+//                List<String> x = new ArrayList<String>();
+//                CertificateInfo certificateInfo = new CertificateInfo();
+//                certificateInfo.setUserName(cn);
+//                certificateInfo.setCompanyName(on);
+//                certificateInfo.setValidDate(date);
+//                certificates.add(certificateInfo);
+//            }
         } catch (CertificateException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {

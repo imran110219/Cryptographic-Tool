@@ -1,9 +1,18 @@
-package com.sadman.controller.model;
+package com.sadman.model;
 
 public class CertificateInfo {
+    private String aliasName;
     private String userName;
     private String companyName;
     private String validDate;
+
+    public String getAliasName() {
+        return aliasName;
+    }
+
+    public void setAliasName(String aliasName) {
+        this.aliasName = aliasName;
+    }
 
     public String getUserName() {
         return userName;

@@ -6,9 +6,7 @@ import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Sadman
@@ -100,6 +98,17 @@ public class JavaKeyStore {
             String alias = enumeration.nextElement();
             Certificate certificate = keyStore.getCertificate(alias);
             certificates.add(certificate);
+        }
+        return certificates;
+    }
+
+    public Map<String, Certificate> getCertificateMap() throws KeyStoreException {
+        Map<String, Certificate> certificates = new HashMap<>();
+        Enumeration<String> enumeration = keyStore.aliases();
+        while (enumeration.hasMoreElements()) {
+            String alias = enumeration.nextElement();
+            Certificate certificate = keyStore.getCertificate(alias);
+            certificates.put(alias,certificate);
         }
         return certificates;
     }
