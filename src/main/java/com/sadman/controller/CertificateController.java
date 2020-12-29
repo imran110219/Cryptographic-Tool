@@ -130,6 +130,10 @@ public class CertificateController implements Initializable {
         stage.show();
     }
 
+    public void refreshAction(ActionEvent event) {
+        certificateTable.refresh();
+    }
+
     @FXML
     public void closeAction(ActionEvent event) {
         Platform.exit();

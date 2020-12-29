@@ -1,31 +1,22 @@
 package com.sadman.controller.certificate;
 
+import com.sadman.model.CertificateInfo;
 import com.sadman.util.CertificateGenerator;
 import com.sadman.util.JavaKeyStore;
 import com.sadman.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
-import java.io.IOException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class CrudCertificateController {
 
@@ -47,6 +38,12 @@ public class CrudCertificateController {
     private TextField aliasField;
     @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private TableView<CertificateInfo> certificateTable;
 
     @FXML
     public void saveAction(ActionEvent event) throws Exception {
@@ -72,6 +69,10 @@ public class CrudCertificateController {
             PrivateKey privateKey = certificateGenerator.generatePrivateKey(keypair);
             javaKeyStore.setKeyEntry(aliasField.getText(), privateKey, passwordField.getText(), new Certificate[]{certificate});
             javaKeyStore.saveKeyStore();
+
+            ((Stage) saveButton.getScene().getWindow()).close();
+
+            certificateTable.refresh();
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Successful");

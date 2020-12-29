@@ -107,6 +107,8 @@ public class MainController implements Initializable {
         }
     }
 
+
+
     @FXML
     public void closeAction(ActionEvent event) {
         Platform.exit();

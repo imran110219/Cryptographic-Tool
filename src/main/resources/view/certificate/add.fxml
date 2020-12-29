@@ -76,7 +76,7 @@
         </HBox>
         <HBox prefHeight="100.0" prefWidth="200.0">
             <children>
-                <Button mnemonicParsing="false" text="Save" onAction="#saveAction">
+                <Button fx:id="saveButton" mnemonicParsing="false" text="Save" onAction="#saveAction">
                     <HBox.margin>
                         <Insets bottom="20.0" left="130.0" right="20.0" top="20.0"/>
                     </HBox.margin>
