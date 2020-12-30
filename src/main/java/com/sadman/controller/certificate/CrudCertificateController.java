@@ -12,11 +12,16 @@ import javafx.stage.Stage;
 import sun.security.tools.keytool.CertAndKeyGen;
 import sun.security.x509.X500Name;
 
+import java.io.IOException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 public class CrudCertificateController {
 
@@ -45,15 +50,21 @@ public class CrudCertificateController {
     @FXML
     private TableView<CertificateInfo> certificateTable;
 
+    JavaKeyStore javaKeyStore;
+
+    public CrudCertificateController() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        javaKeyStore = new JavaKeyStore(Util.readApplicationProperty("java.keystore.type"),
+                Util.readApplicationProperty("java.keystore.password"),
+                Util.readApplicationProperty("java.keystore.name"));
+        javaKeyStore.loadKeyStore();
+    }
+
     @FXML
     public void saveAction(ActionEvent event) throws Exception {
 
         if (validateInput()) {
 
-            JavaKeyStore javaKeyStore = new JavaKeyStore(Util.readApplicationProperty("java.keystore.type"),
-                    Util.readApplicationProperty("java.keystore.password"),
-                    Util.readApplicationProperty("java.keystore.name"));
-            javaKeyStore.loadKeyStore();
+
 
             X500Name x500Name = new X500Name(nameField.getText(),
                     unitField.getText(),

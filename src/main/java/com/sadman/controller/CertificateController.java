@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,10 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Sadman
@@ -44,6 +43,12 @@ public class CertificateController implements Initializable {
 
     private double xOffset = 0;
     private double yOffset = 0;
+    private JavaKeyStore javaKeyStore;
+
+    public CertificateController() throws CertificateException, NoSuchAlgorithmException, IOException, KeyStoreException {
+        javaKeyStore = new JavaKeyStore("PKCS12", "123456", "JavaKeyStore.jks");
+        javaKeyStore.loadKeyStore();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,26 +58,22 @@ public class CertificateController implements Initializable {
         certificateTable.setItems(getCertificates());
     }
 
-    private ObservableList<CertificateInfo> getCertificates() {
-        ObservableList<CertificateInfo> certificates = FXCollections.<CertificateInfo> observableArrayList();
-        JavaKeyStore javaKeyStore = null;
+    public ObservableList<CertificateInfo> getCertificates() {
+        ObservableList<CertificateInfo> certificates = FXCollections.<CertificateInfo>observableArrayList();
         try {
-            javaKeyStore = new JavaKeyStore("PKCS12","123456", "JavaKeyStore.jks");
-            javaKeyStore.loadKeyStore();
-
             Map<String, Certificate> certificateMap = javaKeyStore.getCertificateMap();
-            certificateMap.forEach((k,v)-> {
+            certificateMap.forEach((k, v) -> {
                 X509Certificate x509Certificate = (X509Certificate) v;
                 String cn = null;
                 String on = null;
                 try {
-                    cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
+                    cn = ((X500Name) x509Certificate.getSubjectDN()).getCommonName();
                     on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 String date = x509Certificate.getNotAfter().toString();
-                System.out.println(cn + "     " + on + "     " +date);
+                System.out.println(cn + "     " + on + "     " + date);
                 List<String> x = new ArrayList<String>();
                 CertificateInfo certificateInfo = new CertificateInfo();
                 certificateInfo.setAliasName(k);
@@ -97,13 +98,7 @@ public class CertificateController implements Initializable {
 //                certificateInfo.setValidDate(date);
 //                certificates.add(certificateInfo);
 //            }
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
         } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
         return certificates;
@@ -128,6 +123,22 @@ public class CertificateController implements Initializable {
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @FXML
+    public void deleteAction(ActionEvent event) throws Exception {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete");
+        alert.setHeaderText("Delete Certificate");
+        alert.setContentText("Are you sure?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
+            javaKeyStore.deleteEntry(selectedCertificate.getAliasName());
+            javaKeyStore.saveKeyStore();
+            certificateTable.getSelectionModel().clearSelection();
+        }
     }
 
     public void refreshAction(ActionEvent event) {

@@ -73,7 +73,7 @@ public class JavaKeyStore {
         return keyStore.getCertificate(alias);
     }
 
-    void deleteEntry(String alias) throws KeyStoreException {
+    public void deleteEntry(String alias) throws KeyStoreException {
         keyStore.deleteEntry(alias);
     }
 

@@ -22,7 +22,7 @@
         <Button layoutX="744.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeAction" text="Close"/>
         <Button layoutX="42.0" layoutY="491.0" mnemonicParsing="false" onAction="#addAction" text="Add"/>
         <Button layoutX="111.0" layoutY="491.0" mnemonicParsing="false" text="Edit"/>
-        <Button layoutX="178.0" layoutY="491.0" mnemonicParsing="false" text="Delete"/>
+        <Button layoutX="178.0" layoutY="491.0" mnemonicParsing="false" onAction="#deleteAction" text="Delete"/>
         <Button layoutX="42.0" layoutY="63.0" mnemonicParsing="false" onAction="#refreshAction" text="Refresh"/>
     </children>
 </Pane>
