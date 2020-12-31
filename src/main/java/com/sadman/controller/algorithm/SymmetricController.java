@@ -11,8 +11,7 @@ import javafx.stage.FileChooser;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -90,13 +89,23 @@ public class SymmetricController implements Initializable {
         outputText.setText(decryptedString);
     }
 
-    public void doUploadKey(ActionEvent actionEvent) {
+    public void doUploadKey(ActionEvent actionEvent) throws IOException {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
 
             lblStatus.setText("File selected: " + selectedFile.getName());
+
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
+
+            keyText.setText(resultStringBuilder.toString());
         }
         else {
             lblStatus.setText("File selection cancelled.");

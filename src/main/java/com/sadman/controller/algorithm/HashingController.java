@@ -23,8 +23,8 @@ public class HashingController implements Initializable {
     @FXML
     private TextArea outputText;
 
-    @FXML
-    private Label lblHashing;
+//    @FXML
+//    private Label lblHashing;
 
     @FXML
     private Button btnHashing;
@@ -33,7 +33,7 @@ public class HashingController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblHashing.setText(header);
+//        lblHashing.setText(header);
     }
 
     public HashingController(String header) {

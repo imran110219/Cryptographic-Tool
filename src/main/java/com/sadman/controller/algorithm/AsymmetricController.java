@@ -38,8 +38,8 @@ public class AsymmetricController implements Initializable {
     @FXML
     private TextField publicKeyText;
 
-    @FXML
-    private Label lblAsymmteric;
+//    @FXML
+//    private Label lblAsymmteric;
 
     @FXML
     private Button btnGenerateKey;
@@ -58,7 +58,7 @@ public class AsymmetricController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblAsymmteric.setText(header);
+//        lblAsymmteric.setText(header);
     }
 
     public void generateKey(ActionEvent actionEvent) throws NoSuchAlgorithmException {
