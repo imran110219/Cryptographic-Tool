@@ -7,9 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 
 import javax.crypto.*;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.security.InvalidKeyException;
@@ -31,8 +33,8 @@ public class SymmetricController implements Initializable {
     @FXML
     private TextField keyText;
 
-    @FXML
-    private Label lblSymmteric;
+//    @FXML
+//    private Label lblSymmteric;
 
     @FXML
     private Button btnEncrypt;
@@ -43,6 +45,12 @@ public class SymmetricController implements Initializable {
     @FXML
     private Button btnGenerateKey;
 
+    @FXML
+    private Button btnUploadKey;
+
+    @FXML
+    private Label lblStatus;
+
     private String header;
 
     public SymmetricController(String header) {
@@ -51,7 +59,7 @@ public class SymmetricController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lblSymmteric.setText(header);
+//        lblSymmteric.setText(header);
     }
 
     public void generateKey(ActionEvent actionEvent) throws NoSuchAlgorithmException {
@@ -80,5 +88,18 @@ public class SymmetricController implements Initializable {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         String decryptedString = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString)));
         outputText.setText(decryptedString);
+    }
+
+    public void doUploadKey(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+        }
     }
 }
