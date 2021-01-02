@@ -1,5 +1,6 @@
 package com.sadman.controller.algorithm;
 
+import com.sadman.util.Util;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,7 +63,7 @@ public class SymmetricController implements Initializable {
     }
 
     public void generateKey(ActionEvent actionEvent) throws NoSuchAlgorithmException {
-        SecretKey secretKey = KeyGenerator.getInstance("AES").generateKey();
+        SecretKey secretKey = KeyGenerator.getInstance(header).generateKey();
         String key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
         keyText.setText(key);
     }
@@ -89,7 +90,7 @@ public class SymmetricController implements Initializable {
         outputText.setText(decryptedString);
     }
 
-    public void doUploadKey(ActionEvent actionEvent) throws IOException {
+    public void doUploadText(ActionEvent actionEvent) throws IOException {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
 
@@ -105,10 +106,47 @@ public class SymmetricController implements Initializable {
                 }
             }
 
+            inputText.setText(resultStringBuilder.toString());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+        }
+    }
+
+    public void doDownloadText(ActionEvent actionEvent) throws IOException {
+        String str = outputText.getText();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: " + "output.txt");
+        writer.close();
+    }
+
+    public void doUploadKey(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
             keyText.setText(resultStringBuilder.toString());
         }
         else {
             lblStatus.setText("File selection cancelled.");
         }
+    }
+
+    public void doDownloadKey(ActionEvent actionEvent) throws IOException {
+        String str = keyText.getText().trim();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("key.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: " + "output.txt");
+        writer.close();
     }
 }

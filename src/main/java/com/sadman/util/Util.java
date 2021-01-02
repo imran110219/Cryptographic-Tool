@@ -1,9 +1,13 @@
 package com.sadman.util;
 
+import sun.misc.BASE64Decoder;
+
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.security.Key;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.Properties;
 
@@ -28,5 +32,21 @@ public class Util {
             properties.load(is);
         }
         return properties.getProperty(name);
+    }
+
+    public static String getPemPublicKey(String filename, String algorithm) throws Exception {
+        File f = new File(filename);
+        FileInputStream fis = new FileInputStream(f);
+        DataInputStream dis = new DataInputStream(fis);
+        byte[] keyBytes = new byte[(int) f.length()];
+        dis.readFully(keyBytes);
+        dis.close();
+
+        String temp = new String(keyBytes);
+        String publicKeyPEM = temp.replace("-----BEGIN PUBLIC KEY-----", "");
+        publicKeyPEM = publicKeyPEM.replace("-----END PUBLIC KEY-----", "");
+        publicKeyPEM = publicKeyPEM.replace("\n", "");
+
+        return publicKeyPEM;
     }
 }
