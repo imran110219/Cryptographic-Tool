@@ -127,17 +127,27 @@ public class CertificateController implements Initializable {
 
     @FXML
     public void deleteAction(ActionEvent event) throws Exception {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete");
-        alert.setHeaderText("Delete Certificate");
-        alert.setContentText("Are you sure?");
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
-            javaKeyStore.deleteEntry(selectedCertificate.getAliasName());
-            javaKeyStore.saveKeyStore();
-            certificateTable.getSelectionModel().clearSelection();
+        if(certificateTable.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Select Certificate");
+            alert.setContentText("Please select a certificate");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete");
+            alert.setHeaderText("Delete Certificate");
+            alert.setContentText("Are you sure?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+                CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
+                javaKeyStore.deleteEntry(selectedCertificate.getAliasName());
+                javaKeyStore.saveKeyStore();
+                certificateTable.getSelectionModel().clearSelection();
+            }
         }
     }
 

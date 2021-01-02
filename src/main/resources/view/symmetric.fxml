@@ -74,7 +74,7 @@
                 text="Encrypt"/>
         <Button fx:id="btnDecrypt" layoutX="272.0" layoutY="297.0" mnemonicParsing="false" onAction="#doDecrypt"
                 text="Decrypt"/>
-        <Label fx:id="lblStatus" layoutX="76.0" layoutY="359.0" text="Upload Status"/>
+        <Label fx:id="lblStatus" layoutX="76.0" layoutY="359.0" text=""/>
 
 
 
