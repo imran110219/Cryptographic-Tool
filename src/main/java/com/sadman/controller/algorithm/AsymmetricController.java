@@ -7,12 +7,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -50,6 +52,9 @@ public class AsymmetricController implements Initializable {
     @FXML
     private Button btnDecrypt;
 
+    @FXML
+    private Label lblStatus;
+
     private String header;
 
     public AsymmetricController(String header) {
@@ -74,6 +79,8 @@ public class AsymmetricController implements Initializable {
 
         publicKeyText.setText(strPublicKey);
         privateKeyText.setText(strPrivateKey);
+        lblStatus.setText("Key Pair generated.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
     public void doEncrypt(ActionEvent actionEvent) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidKeySpecException {
@@ -88,9 +95,11 @@ public class AsymmetricController implements Initializable {
         cipher.init(Cipher.ENCRYPT_MODE, publickey);
         String encryptedString = Base64.getEncoder().encodeToString(cipher.doFinal(plainString.getBytes("UTF-8")));
         outputText.setText(encryptedString);
+        lblStatus.setText("Text encrypted.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
-    public void doDecrypt(ActionEvent actionEvent) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
+    public void doDecrypt(ActionEvent actionEvent) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
         String encryptedString = inputText.getText();
         String privateKeyString = privateKeyText.getText();
         byte[] privateBytes = Base64.getDecoder().decode(privateKeyString);
@@ -102,6 +111,105 @@ public class AsymmetricController implements Initializable {
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         String decryptedString = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString)));
         outputText.setText(decryptedString);
+        lblStatus.setText("Text decrypted.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
+    public void doUploadText(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+            lblStatus.setTextFill(Color.GREEN);
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
+
+            inputText.setText(resultStringBuilder.toString());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
+
+        }
+    }
+
+    public void doDownloadText(ActionEvent actionEvent) throws IOException {
+        String str = outputText.getText();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Text.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: "  + header + "Text.txt");
+        lblStatus.setTextFill(Color.GREEN);
+        writer.close();
+    }
+
+    public void doUploadPrivateKey(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+            lblStatus.setTextFill(Color.GREEN);
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
+            privateKeyText.setText(resultStringBuilder.toString());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
+        }
+    }
+
+    public void doDownloadPrivateKey(ActionEvent actionEvent) throws IOException {
+        String str = publicKeyText.getText().trim();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("privatekey.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: " + "privatekey.txt");
+        lblStatus.setTextFill(Color.GREEN);
+        writer.close();
+    }
+
+    public void doUploadPublicKey(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+            lblStatus.setTextFill(Color.GREEN);
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
+            publicKeyText.setText(resultStringBuilder.toString());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
+        }
+    }
+
+    public void doDownloadPublicKey(ActionEvent actionEvent) throws IOException {
+        String str = privateKeyText.getText().trim();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("publickey.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: " + "publickey.txt");
+        lblStatus.setTextFill(Color.GREEN);
+        writer.close();
+    }
 }

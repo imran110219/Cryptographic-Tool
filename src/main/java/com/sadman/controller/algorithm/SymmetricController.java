@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 
 import javax.crypto.*;
@@ -66,6 +67,8 @@ public class SymmetricController implements Initializable {
         SecretKey secretKey = KeyGenerator.getInstance(header).generateKey();
         String key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
         keyText.setText(key);
+        lblStatus.setText("Key generated.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
     public void doEncrypt(ActionEvent actionEvent) throws IOException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException {
@@ -77,6 +80,8 @@ public class SymmetricController implements Initializable {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         String encryptedString = Base64.getEncoder().encodeToString(cipher.doFinal(originalString.getBytes("UTF-8")));
         outputText.setText(encryptedString);
+        lblStatus.setText("Text encrypted.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
     public void doDecrypt(ActionEvent actionEvent) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
@@ -88,6 +93,8 @@ public class SymmetricController implements Initializable {
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         String decryptedString = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString)));
         outputText.setText(decryptedString);
+        lblStatus.setText("Text decrypted.");
+        lblStatus.setTextFill(Color.GREEN);
     }
 
     public void doUploadText(ActionEvent actionEvent) throws IOException {
@@ -97,7 +104,7 @@ public class SymmetricController implements Initializable {
         if (selectedFile != null) {
 
             lblStatus.setText("File selected: " + selectedFile.getName());
-
+            lblStatus.setTextFill(Color.GREEN);
             StringBuilder resultStringBuilder = new StringBuilder();
             try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
                 String line;
@@ -107,17 +114,18 @@ public class SymmetricController implements Initializable {
             }
 
             inputText.setText(resultStringBuilder.toString());
-        }
-        else {
+        } else {
             lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
         }
     }
 
     public void doDownloadText(ActionEvent actionEvent) throws IOException {
         String str = outputText.getText();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Text.txt"));
         writer.write(str);
-        lblStatus.setText("File downloaded: " + "output.txt");
+        lblStatus.setText("File downloaded: " + header + "Text.txt");
+        lblStatus.setTextFill(Color.GREEN);
         writer.close();
     }
 
@@ -128,6 +136,7 @@ public class SymmetricController implements Initializable {
         if (selectedFile != null) {
 
             lblStatus.setText("File selected: " + selectedFile.getName());
+            lblStatus.setTextFill(Color.GREEN);
             StringBuilder resultStringBuilder = new StringBuilder();
             try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
                 String line;
@@ -136,9 +145,9 @@ public class SymmetricController implements Initializable {
                 }
             }
             keyText.setText(resultStringBuilder.toString());
-        }
-        else {
+        } else {
             lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
         }
     }
 
@@ -146,7 +155,8 @@ public class SymmetricController implements Initializable {
         String str = keyText.getText().trim();
         BufferedWriter writer = new BufferedWriter(new FileWriter("key.txt"));
         writer.write(str);
-        lblStatus.setText("File downloaded: " + "output.txt");
+        lblStatus.setText("File downloaded: " + "key.txt");
+        lblStatus.setTextFill(Color.GREEN);
         writer.close();
     }
 }

@@ -6,8 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,6 +30,9 @@ public class HashingController implements Initializable {
 
     @FXML
     private Button btnHashing;
+
+    @FXML
+    private Label lblStatus;
 
     private String header;
 
@@ -58,5 +63,40 @@ public class HashingController implements Initializable {
             e.printStackTrace();
         }
         outputText.setText(hashString);
+        lblStatus.setText("Hash generated.");
+        lblStatus.setTextFill(Color.GREEN);
+    }
+
+    public void doUploadText(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null) {
+
+            lblStatus.setText("File selected: " + selectedFile.getName());
+            lblStatus.setTextFill(Color.GREEN);
+            StringBuilder resultStringBuilder = new StringBuilder();
+            try (BufferedReader br = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    resultStringBuilder.append(line).append("\n");
+                }
+            }
+
+            inputText.setText(resultStringBuilder.toString());
+        }
+        else {
+            lblStatus.setText("File selection cancelled.");
+            lblStatus.setTextFill(Color.RED);
+        }
+    }
+
+    public void doDownloadText(ActionEvent actionEvent) throws IOException {
+        String str = outputText.getText();
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Text.txt"));
+        writer.write(str);
+        lblStatus.setText("File downloaded: "  + header + "Text.txt");
+        lblStatus.setTextFill(Color.GREEN);
+        writer.close();
     }
 }
