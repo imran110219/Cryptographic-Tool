@@ -73,6 +73,14 @@ public class JavaKeyStore {
         return keyStore.getCertificate(alias);
     }
 
+    public Certificate[] getCertificateChain(String alias) throws KeyStoreException {
+        return keyStore.getCertificateChain(alias);
+    }
+
+    public PrivateKey getPrivateKey(String alias, String password) throws KeyStoreException, UnrecoverableKeyException, NoSuchAlgorithmException {
+        return (PrivateKey)keyStore.getKey(alias, password.toCharArray());
+    }
+
     public void deleteEntry(String alias) throws KeyStoreException {
         keyStore.deleteEntry(alias);
     }

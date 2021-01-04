@@ -92,7 +92,9 @@ public class MainController implements Initializable {
         }
         if(actionEvent.getSource()==btnSigning)
         {
-            pnlSigning.setStyle("-fx-background-color : #896d6c");
+            Pane signingPane =  FXMLLoader.load(getClass().getResource("/view/signing.fxml"));
+            pnlSigning.getChildren().setAll(signingPane);
+            pnlSigning.setStyle("-fx-background-color : #F1F0F6");
             pnlSigning.toFront();
         }
         if(actionEvent.getSource()==btnEncrypt)

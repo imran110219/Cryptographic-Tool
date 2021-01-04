@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane prefHeight="435.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<Pane prefHeight="435.0" prefWidth="748.0" xmlns="http://javafx.com/javafx/10.0.2-internal"
+      xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <!--        <Label fx:id="lblAsymmteric" layoutX="14.0" layoutY="14.0" text="Asymmteric" textFill="#23151b">-->
         <!--            <font>-->
@@ -14,86 +15,96 @@
         <!--        </Label>-->
         <Label layoutX="18.0" layoutY="36.0" text="Input">
             <font>
-                <Font size="16.0" />
+                <Font size="16.0"/>
             </font>
         </Label>
-        <Button layoutX="18.0" layoutY="91.0" mnemonicParsing="false" onAction="#doUploadText" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="18.0" layoutY="91.0" mnemonicParsing="false" onAction="#doUploadText" prefHeight="17.0"
+                prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png" />
+                        <Image url="@../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <TextArea fx:id="inputText" layoutX="76.0" layoutY="37.0" prefHeight="82.0" prefWidth="639.0" />
+        <TextArea fx:id="inputText" layoutX="76.0" layoutY="37.0" prefHeight="82.0" prefWidth="639.0"/>
         <Label layoutX="5.0" layoutY="143.0" text="Private Key">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
         </Label>
-        <Button layoutX="76.0" layoutY="142.0" mnemonicParsing="false" onAction="#doUploadPrivateKey" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="76.0" layoutY="142.0" mnemonicParsing="false" onAction="#doUploadPrivateKey" prefHeight="17.0"
+                prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png" />
+                        <Image url="@../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button layoutX="112.0" layoutY="142.0" mnemonicParsing="false" onAction="#doDownloadPrivateKey" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="112.0" layoutY="142.0" mnemonicParsing="false" onAction="#doDownloadPrivateKey"
+                prefHeight="17.0" prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png" />
+                        <Image url="@../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <TextField fx:id="privateKeyText" layoutX="148.0" layoutY="143.0" prefHeight="25.0" prefWidth="567.0" />
+        <TextField fx:id="privateKeyText" layoutX="148.0" layoutY="143.0" prefHeight="25.0" prefWidth="567.0"/>
         <Label layoutX="7.0" layoutY="197.0" text="Public Key">
             <font>
-                <Font size="14.0" />
+                <Font size="14.0"/>
             </font>
         </Label>
-        <Button layoutX="76.0" layoutY="193.0" mnemonicParsing="false" onAction="#doUploadPublicKey" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="76.0" layoutY="193.0" mnemonicParsing="false" onAction="#doUploadPublicKey" prefHeight="17.0"
+                prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png" />
+                        <Image url="@../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button layoutX="112.0" layoutY="193.0" mnemonicParsing="false" onAction="#doDownloadPublicKey" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="112.0" layoutY="193.0" mnemonicParsing="false" onAction="#doDownloadPublicKey"
+                prefHeight="17.0" prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png" />
+                        <Image url="@../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <TextField fx:id="publicKeyText" layoutX="148.0" layoutY="194.0" prefHeight="25.0" prefWidth="567.0" />
+        <TextField fx:id="publicKeyText" layoutX="148.0" layoutY="194.0" prefHeight="25.0" prefWidth="567.0"/>
         <Label layoutX="12.0" layoutY="248.0" text="Output">
             <font>
-                <Font size="16.0" />
+                <Font size="16.0"/>
             </font>
         </Label>
-        <Button layoutX="21.0" layoutY="301.0" mnemonicParsing="false" onAction="#doDownloadText" prefHeight="17.0" prefWidth="36.0">
+        <Button layoutX="21.0" layoutY="301.0" mnemonicParsing="false" onAction="#doDownloadText" prefHeight="17.0"
+                prefWidth="36.0">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png" />
+                        <Image url="@../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <TextArea fx:id="outputText" editable="false" layoutX="76.0" layoutY="247.0" prefHeight="82.0" prefWidth="639.0" />
-        <Button fx:id="btnGenerateKey" layoutX="76.0" layoutY="346.0" mnemonicParsing="false" onAction="#generateKey" text="Generate Key" />
-        <Button fx:id="btnEncrypt" layoutX="189.0" layoutY="346.0" mnemonicParsing="false" onAction="#doEncrypt" text="Encrypt" />
-        <Button fx:id="btnDecrypt" layoutX="271.0" layoutY="346.0" mnemonicParsing="false" onAction="#doDecrypt" text="Decrypt" />
-        <Label fx:id="lblStatus" layoutX="76.0" layoutY="391.0" text="" />
+        <TextArea fx:id="outputText" editable="false" layoutX="76.0" layoutY="247.0" prefHeight="82.0"
+                  prefWidth="639.0"/>
+        <Button fx:id="btnGenerateKey" layoutX="76.0" layoutY="346.0" mnemonicParsing="false" onAction="#generateKey"
+                text="Generate Key"/>
+        <Button fx:id="btnEncrypt" layoutX="189.0" layoutY="346.0" mnemonicParsing="false" onAction="#doEncrypt"
+                text="Encrypt"/>
+        <Button fx:id="btnDecrypt" layoutX="271.0" layoutY="346.0" mnemonicParsing="false" onAction="#doDecrypt"
+                text="Decrypt"/>
+        <Label fx:id="lblStatus" layoutX="76.0" layoutY="391.0" text=""/>
 
     </children>
 </Pane>

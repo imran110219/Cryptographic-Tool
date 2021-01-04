@@ -22,13 +22,16 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import sun.security.x509.X500Name;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import java.util.*;
 
 /**
@@ -83,21 +86,6 @@ public class CertificateController implements Initializable {
                 certificates.add(certificateInfo);
             });
 
-//            for(Certificate cert : javaKeyStore.getCertificateList()){
-//                X509Certificate x509Certificate = (X509Certificate) cert;
-////            System.out.println(cert);
-//                String an = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
-//                String cn = ((X500Name)x509Certificate.getSubjectDN()).getCommonName();
-//                String on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
-//                String date = x509Certificate.getNotAfter().toString();
-//                System.out.println(cn + "     " + on + "     " +date);
-//                List<String> x = new ArrayList<String>();
-//                CertificateInfo certificateInfo = new CertificateInfo();
-//                certificateInfo.setUserName(cn);
-//                certificateInfo.setCompanyName(on);
-//                certificateInfo.setValidDate(date);
-//                certificates.add(certificateInfo);
-//            }
         } catch (KeyStoreException e) {
             e.printStackTrace();
         }
@@ -147,6 +135,40 @@ public class CertificateController implements Initializable {
                 javaKeyStore.deleteEntry(selectedCertificate.getAliasName());
                 javaKeyStore.saveKeyStore();
                 certificateTable.getSelectionModel().clearSelection();
+            }
+        }
+    }
+
+    public void downloadCertificate(ActionEvent event) throws Exception {
+        if(certificateTable.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Select Certificate");
+            alert.setContentText("Please select a certificate");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        else {
+            CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
+            X509Certificate x509Certificate = (X509Certificate) javaKeyStore.getCertificate(selectedCertificate.getAliasName());
+            try(JcaPEMWriter pemWriter = new JcaPEMWriter(new FileWriter("Certificate.pem"))) {
+                pemWriter.writeObject(x509Certificate);
+            }
+        }
+    }
+
+    public void downloadPrivateKey(ActionEvent event) throws Exception {
+        if(certificateTable.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Select Certificate");
+            alert.setContentText("Please select a certificate");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+        else {
+            CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
+            PrivateKey privateKey = javaKeyStore.getPrivateKey(selectedCertificate.getAliasName(),"123456");
+            try(JcaPEMWriter pemWriter = new JcaPEMWriter(new FileWriter("privatekey.pem"))) {
+                pemWriter.writeObject(privateKey);
             }
         }
     }

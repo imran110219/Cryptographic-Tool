@@ -37,4 +37,9 @@ public class CertificateInfo {
     public void setValidDate(String validDate) {
         this.validDate = validDate;
     }
+
+    @Override
+    public String toString() {
+        return userName;
+    }
 }

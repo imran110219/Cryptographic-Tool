@@ -1,20 +1,27 @@
 package com.sadman.util;
 
+import com.sadman.model.CertificateInfo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import sun.misc.BASE64Decoder;
+import sun.security.x509.X500Name;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.PublicKey;
+import java.security.*;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author Sadman
  */
 public class Util {
+
+
+
     public static String convertKeyToString(Key key){
         return Base64.getEncoder().encodeToString(key.getEncoded());
     }
@@ -48,5 +55,45 @@ public class Util {
         publicKeyPEM = publicKeyPEM.replace("\n", "");
 
         return publicKeyPEM;
+    }
+
+    public static PrivateKey getPrivateKey(String alias, String password) throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, UnrecoverableKeyException {
+        JavaKeyStore javaKeyStore = new JavaKeyStore("PKCS12", "123456", "JavaKeyStore.jks");
+        javaKeyStore.loadKeyStore();
+        return javaKeyStore.getPrivateKey(alias,password);
+    }
+
+    public static ObservableList<CertificateInfo> getCertificates() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+        JavaKeyStore javaKeyStore = new JavaKeyStore("PKCS12", "123456", "JavaKeyStore.jks");
+        javaKeyStore.loadKeyStore();
+
+        ObservableList<CertificateInfo> certificates = FXCollections.<CertificateInfo>observableArrayList();
+        try {
+            Map<String, Certificate> certificateMap = javaKeyStore.getCertificateMap();
+            certificateMap.forEach((k, v) -> {
+                X509Certificate x509Certificate = (X509Certificate) v;
+                String cn = null;
+                String on = null;
+                try {
+                    cn = ((X500Name) x509Certificate.getSubjectDN()).getCommonName();
+                    on = ((X500Name) x509Certificate.getSubjectDN()).getOrganization();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String date = x509Certificate.getNotAfter().toString();
+                System.out.println(cn + "     " + on + "     " + date);
+                List<String> x = new ArrayList<String>();
+                CertificateInfo certificateInfo = new CertificateInfo();
+                certificateInfo.setAliasName(k);
+                certificateInfo.setUserName(cn);
+                certificateInfo.setCompanyName(on);
+                certificateInfo.setValidDate(date);
+                certificates.add(certificateInfo);
+            });
+
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        }
+        return certificates;
     }
 }

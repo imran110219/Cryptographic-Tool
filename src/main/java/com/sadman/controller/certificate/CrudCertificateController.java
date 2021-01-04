@@ -63,9 +63,6 @@ public class CrudCertificateController {
     public void saveAction(ActionEvent event) throws Exception {
 
         if (validateInput()) {
-
-
-
             X500Name x500Name = new X500Name(nameField.getText(),
                     unitField.getText(),
                     organizationField.getText(),

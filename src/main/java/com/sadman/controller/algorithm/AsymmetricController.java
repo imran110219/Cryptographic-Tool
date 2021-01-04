@@ -66,6 +66,7 @@ public class AsymmetricController implements Initializable {
 //        lblAsymmteric.setText(header);
     }
 
+    @FXML
     public void generateKey(ActionEvent actionEvent) throws NoSuchAlgorithmException {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(header);
         SecureRandom secureRandom = new SecureRandom();
@@ -83,6 +84,7 @@ public class AsymmetricController implements Initializable {
         lblStatus.setTextFill(Color.GREEN);
     }
 
+    @FXML
     public void doEncrypt(ActionEvent actionEvent) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, IllegalBlockSizeException, InvalidKeyException, InvalidKeySpecException {
         String plainString = inputText.getText();
         String publicKeyString = publicKeyText.getText();
@@ -99,6 +101,7 @@ public class AsymmetricController implements Initializable {
         lblStatus.setTextFill(Color.GREEN);
     }
 
+    @FXML
     public void doDecrypt(ActionEvent actionEvent) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, InvalidKeySpecException {
         String encryptedString = inputText.getText();
         String privateKeyString = privateKeyText.getText();
@@ -115,6 +118,7 @@ public class AsymmetricController implements Initializable {
         lblStatus.setTextFill(Color.GREEN);
     }
 
+    @FXML
     public void doUploadText(ActionEvent actionEvent) throws IOException {
         FileChooser fileChooser = new FileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -140,6 +144,7 @@ public class AsymmetricController implements Initializable {
         }
     }
 
+    @FXML
     public void doDownloadText(ActionEvent actionEvent) throws IOException {
         String str = outputText.getText();
         BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Text.txt"));
@@ -172,6 +177,7 @@ public class AsymmetricController implements Initializable {
         }
     }
 
+    @FXML
     public void doDownloadPrivateKey(ActionEvent actionEvent) throws IOException {
         String str = publicKeyText.getText().trim();
         BufferedWriter writer = new BufferedWriter(new FileWriter("privatekey.txt"));
