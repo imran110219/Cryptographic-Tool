@@ -5,15 +5,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane prefHeight="554.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.sadman.controller.SigningController">
+<Pane prefHeight="554.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.sadman.controller.SigningController">
     <children>
-        <Label layoutX="23.0" layoutY="22.0" text="Select File Type" />
-        <ChoiceBox fx:id="cbFileTpe" layoutX="23.0" layoutY="47.0" prefHeight="25.0" prefWidth="92.0" />
-        <Label layoutX="143.0" layoutY="22.0" text="Select Signer" />
-        <ChoiceBox fx:id="cbSigner" layoutX="143.0" layoutY="47.0" prefHeight="25.0" prefWidth="125.0" />
-        <Button layoutX="291.0" layoutY="47.0" mnemonicParsing="false" onAction="#doSelectFile" text="Select File" />
-        <Label layoutX="462.0" layoutY="52.0" text="Status" />
-        <Button layoutX="744.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeAction" text="Close" />
-      <Button layoutX="387.0" layoutY="48.0" mnemonicParsing="false" onAction="#doSign" text="Sign" />
+        <Label layoutX="23.0" layoutY="22.0" text="Select File Type"/>
+        <ChoiceBox fx:id="cbFileType" layoutX="23.0" layoutY="47.0" prefHeight="25.0" prefWidth="92.0"/>
+        <Label layoutX="143.0" layoutY="22.0" text="Select Signer"/>
+        <ChoiceBox fx:id="cbSigner" layoutX="143.0" layoutY="47.0" prefHeight="25.0" prefWidth="125.0"/>
+        <Button layoutX="291.0" layoutY="47.0" mnemonicParsing="false" onAction="#doSelectFile" text="Select File"/>
+        <Label fx:id="lblStatus" layoutX="462.0" layoutY="52.0" text="Status"/>
+        <Button layoutX="744.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeAction" text="Close"/>
+        <Button layoutX="387.0" layoutY="48.0" mnemonicParsing="false" onAction="#doSign" text="Sign"/>
     </children>
 </Pane>

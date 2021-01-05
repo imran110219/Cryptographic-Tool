@@ -31,7 +31,7 @@ public class CertificateGenerator {
         return keypair.getSelfCertificate(x500Name, new Date(), validity * 24 * 60 * 60);
     }
 
-    public PrivateKey generatePrivateKey(CertAndKeyGen keypair) throws IOException, InvalidKeyException, NoSuchAlgorithmException, CertificateException, SignatureException, NoSuchProviderException {
+    public PrivateKey generatePrivateKey(CertAndKeyGen keypair) {
         return keypair.getPrivateKey();
     }
 }

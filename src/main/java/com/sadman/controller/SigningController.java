@@ -1,6 +1,7 @@
 package com.sadman.controller;
 
 import com.sadman.model.CertificateInfo;
+import com.sadman.service.SigningService;
 import com.sadman.util.JavaKeyStore;
 import com.sadman.util.Util;
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -50,22 +52,28 @@ import com.itextpdf.signatures.PrivateKeySignature;
 public class SigningController implements Initializable {
 
     @FXML
-    ChoiceBox cbFileTpe;
+    ChoiceBox<String> cbFileType;
 
     @FXML
     ChoiceBox<CertificateInfo> cbSigner;
 
+    @FXML
+    private Label lblStatus;
+
     private String SRC;
+    private String DES;
     private String ALIAS_NAME;
+    private String DOCUMENT_TYPE;
     JavaKeyStore javaKeyStore;
+    BouncyCastleProvider provider = new BouncyCastleProvider();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Security.addProvider(provider);
         ObservableList<String> filetypes = FXCollections.observableArrayList(
-                "PDF",
-                        "Word",
-                        "JPG");
-        cbFileTpe.setItems(filetypes);
+                "PDF", "Word", "JPG");
+        cbFileType.setItems(filetypes);
         try {
             cbSigner.setItems(Util.getCertificates());
             javaKeyStore = new JavaKeyStore("PKCS12", "123456", "JavaKeyStore.jks");
@@ -83,6 +91,10 @@ public class SigningController implements Initializable {
             if(newval != null)
                 ALIAS_NAME = newval.getAliasName();
         });
+        cbFileType.valueProperty().addListener((obs, oldval, newval) -> {
+            if(newval != null)
+                DOCUMENT_TYPE = newval;
+        });
     }
 
     @FXML
@@ -94,38 +106,19 @@ public class SigningController implements Initializable {
 
     @FXML
     public void doSign(ActionEvent actionEvent) throws GeneralSecurityException, IOException {
-        PdfReader reader = new PdfReader(SRC);
-        PdfSigner signer = new PdfSigner(reader, new FileOutputStream("E:/Digidoc/signed_document.pdf"),true);
-
-        // Create the signature appearance
-        Rectangle rect = new Rectangle(36, 648, 200, 100);
-        PdfSignatureAppearance appearance = signer.getSignatureAppearance();
-        appearance
-                .setReason("Test")
-                .setLocation("Dhaka")
-
-                // Specify if the appearance before field is signed will be used
-                // as a background for the signed field. The "false" value is the default value.
-                .setReuseAppearance(false)
-                .setPageRect(rect)
-                .setPageNumber(1);
-        signer.setFieldName("sig");
-
-        PrivateKey privateKey = Util.getPrivateKey(ALIAS_NAME,"123456");
-
-        BouncyCastleProvider provider = new BouncyCastleProvider();
-        Security.addProvider(provider);
-
-        IExternalSignature pks = new PrivateKeySignature(privateKey, DigestAlgorithms.SHA256, provider.getName());
-        IExternalDigest digest = new BouncyCastleDigest();
-
+        DES = "E:/Digidoc/signed.pdf";
         Certificate[] chain = javaKeyStore.getCertificateChain(ALIAS_NAME);
-
-        // Sign the document using the detached mode, CMS or CAdES equivalent.
-        signer.signDetached(digest, pks, chain, null, null, null, 0, PdfSigner.CryptoStandard.CMS);
+        PrivateKey privateKey = Util.getPrivateKey(ALIAS_NAME,"123456");
+        if(DOCUMENT_TYPE.equals("PDF")){
+            SigningService.signPDF(SRC, DES, chain, privateKey, DigestAlgorithms.SHA256, provider.getName(), PdfSigner.CryptoStandard.CMS, "Test", "Dhaka");
+            lblStatus.setText("PDF Signed");
+            lblStatus.setTextFill(Color.GREEN);
+        }
+        else {
+            lblStatus.setText("Not Available");
+            lblStatus.setTextFill(Color.RED);
+        }
     }
-
-
 
     @FXML
     public void closeAction(ActionEvent event) {
