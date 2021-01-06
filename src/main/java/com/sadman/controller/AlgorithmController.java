@@ -16,8 +16,10 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 
+import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
 
 /**
@@ -61,7 +63,7 @@ public class AlgorithmController implements Initializable {
             public void changed(ObservableValue<? extends String> ov, final String oldvalue, final String newvalue) {
                 try {
                     nameChangedSymmetric(ov, oldvalue, newvalue);
-                } catch (IOException e) {
+                } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException e) {
                     e.printStackTrace();
                 }
             }
@@ -74,7 +76,7 @@ public class AlgorithmController implements Initializable {
             public void changed(ObservableValue<? extends String> ov, final String oldvalue, final String newvalue) {
                 try {
                     nameChangedAsymmetric(ov, oldvalue, newvalue);
-                } catch (IOException e) {
+                } catch (IOException | NoSuchAlgorithmException | NoSuchPaddingException e) {
                     e.printStackTrace();
                 }
             }
@@ -94,11 +96,11 @@ public class AlgorithmController implements Initializable {
         });
     }
 
-    public void nameChangedSymmetric(ObservableValue<? extends String> observable, String oldValue, String newValue) throws IOException {
+    public void nameChangedSymmetric(ObservableValue<? extends String> observable, String oldValue, String newValue) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
 //        String oldText = oldValue == null ? "null" : oldValue.toString();
         String newText = newValue == null ? "null" : newValue.toString();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/symmetric.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/algorithm/symmetric.fxml"));
         SymmetricController symmetricController = new SymmetricController(newText);
         loader.setController(symmetricController);
         Pane symmetricPane = loader.load();
@@ -107,11 +109,11 @@ public class AlgorithmController implements Initializable {
         pnlSymmetric.toFront();
     }
 
-    public void nameChangedAsymmetric(ObservableValue<? extends String> observable, String oldValue, String newValue) throws IOException {
+    public void nameChangedAsymmetric(ObservableValue<? extends String> observable, String oldValue, String newValue) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException {
 //        String oldText = oldValue == null ? "null" : oldValue.toString();
         String newText = newValue == null ? "null" : newValue.toString();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/asymmetric.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/algorithm/asymmetric.fxml"));
         AsymmetricController asymmetricController = new AsymmetricController(newText);
         loader.setController(asymmetricController);
         Pane asymmetricPane = loader.load();
@@ -123,7 +125,7 @@ public class AlgorithmController implements Initializable {
     public void nameChangedHashing(ObservableValue<? extends String> observable, String oldValue, String newValue) throws IOException {
 //        String oldText = oldValue == null ? "null" : oldValue.toString();
         String newText = newValue == null ? "null" : newValue.toString();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/hashing.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/algorithm/hashing.fxml"));
         HashingController hashingController = new HashingController(newText);
         loader.setController(hashingController);
         Pane hashingPane = loader.load();

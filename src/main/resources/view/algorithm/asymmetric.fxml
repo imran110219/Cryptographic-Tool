@@ -23,7 +23,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png"/>
+                        <Image url="@../../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
@@ -39,7 +39,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png"/>
+                        <Image url="@../../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
@@ -49,7 +49,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png"/>
+                        <Image url="@../../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
@@ -65,7 +65,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-upload-96.png"/>
+                        <Image url="@../../images/icons8-upload-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
@@ -75,7 +75,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png"/>
+                        <Image url="@../../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>
@@ -91,7 +91,7 @@
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/icons8-download-96.png"/>
+                        <Image url="@../../images/icons8-download-96.png"/>
                     </image>
                 </ImageView>
             </graphic>

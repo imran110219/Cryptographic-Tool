@@ -53,9 +53,14 @@ public class SymmetricController implements Initializable {
     private Label lblStatus;
 
     private String header;
+    private Cipher cipher;
+    private FileChooser fileChooser;
+    private File selectedFile;
 
-    public SymmetricController(String header) {
+    public SymmetricController(String header) throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.header = header;
+        this.cipher = Cipher.getInstance(header);
+        this.fileChooser = new FileChooser();
     }
 
     @Override
@@ -67,7 +72,7 @@ public class SymmetricController implements Initializable {
         SecretKey secretKey = KeyGenerator.getInstance(header).generateKey();
         String key = Base64.getEncoder().encodeToString(secretKey.getEncoded());
         keyText.setText(key);
-        lblStatus.setText("Key generated.");
+        lblStatus.setText(header + " Key generated.");
         lblStatus.setTextFill(Color.GREEN);
     }
 
@@ -76,7 +81,6 @@ public class SymmetricController implements Initializable {
         String keyString = keyText.getText();
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
         SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, header);
-        Cipher cipher = Cipher.getInstance(header);
         cipher.init(Cipher.ENCRYPT_MODE, secretKey);
         String encryptedString = Base64.getEncoder().encodeToString(cipher.doFinal(originalString.getBytes("UTF-8")));
         outputText.setText(encryptedString);
@@ -89,7 +93,6 @@ public class SymmetricController implements Initializable {
         String keyString = keyText.getText();
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
         SecretKey secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, header);
-        Cipher cipher = Cipher.getInstance(header);
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         String decryptedString = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString)));
         outputText.setText(decryptedString);
@@ -98,8 +101,7 @@ public class SymmetricController implements Initializable {
     }
 
     public void doUploadText(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+        selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
 
@@ -153,9 +155,9 @@ public class SymmetricController implements Initializable {
 
     public void doDownloadKey(ActionEvent actionEvent) throws IOException {
         String str = keyText.getText().trim();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("key.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Key.txt"));
         writer.write(str);
-        lblStatus.setText("File downloaded: " + "key.txt");
+        lblStatus.setText("File downloaded: " + header + "Key.txt");
         lblStatus.setTextFill(Color.GREEN);
         writer.close();
     }

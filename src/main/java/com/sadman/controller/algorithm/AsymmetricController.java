@@ -56,9 +56,14 @@ public class AsymmetricController implements Initializable {
     private Label lblStatus;
 
     private String header;
+    private Cipher cipher;
+    private FileChooser fileChooser;
+    private File selectedFile;
 
-    public AsymmetricController(String header) {
+    public AsymmetricController(String header) throws NoSuchPaddingException, NoSuchAlgorithmException {
         this.header = header;
+        this.cipher = Cipher.getInstance(header);
+        this.fileChooser = new FileChooser();
     }
 
     @Override
@@ -93,7 +98,6 @@ public class AsymmetricController implements Initializable {
         KeyFactory keyFactory = KeyFactory.getInstance(header);
         PublicKey publickey = keyFactory.generatePublic(keySpec);
 
-        Cipher cipher = Cipher.getInstance(header);
         cipher.init(Cipher.ENCRYPT_MODE, publickey);
         String encryptedString = Base64.getEncoder().encodeToString(cipher.doFinal(plainString.getBytes("UTF-8")));
         outputText.setText(encryptedString);
@@ -110,7 +114,6 @@ public class AsymmetricController implements Initializable {
         KeyFactory keyFactory = KeyFactory.getInstance(header);
         PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
 
-        Cipher cipher = Cipher.getInstance(header);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         String decryptedString = new String(cipher.doFinal(Base64.getDecoder().decode(encryptedString)));
         outputText.setText(decryptedString);
@@ -120,8 +123,7 @@ public class AsymmetricController implements Initializable {
 
     @FXML
     public void doUploadText(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+        selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
 
@@ -155,8 +157,7 @@ public class AsymmetricController implements Initializable {
     }
 
     public void doUploadPrivateKey(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+        selectedFile = new FileChooser().showOpenDialog(null);
 
         if (selectedFile != null) {
 
@@ -180,16 +181,15 @@ public class AsymmetricController implements Initializable {
     @FXML
     public void doDownloadPrivateKey(ActionEvent actionEvent) throws IOException {
         String str = publicKeyText.getText().trim();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("privatekey.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "Privatekey.txt"));
         writer.write(str);
-        lblStatus.setText("File downloaded: " + "privatekey.txt");
+        lblStatus.setText("File downloaded: " + header + "Privatekey.txt");
         lblStatus.setTextFill(Color.GREEN);
         writer.close();
     }
 
     public void doUploadPublicKey(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        File selectedFile = fileChooser.showOpenDialog(null);
+        selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
 
@@ -212,9 +212,9 @@ public class AsymmetricController implements Initializable {
 
     public void doDownloadPublicKey(ActionEvent actionEvent) throws IOException {
         String str = privateKeyText.getText().trim();
-        BufferedWriter writer = new BufferedWriter(new FileWriter("publickey.txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(header + "PublicKey.txt"));
         writer.write(str);
-        lblStatus.setText("File downloaded: " + "publickey.txt");
+        lblStatus.setText("File downloaded: " + header + "PublicKey.txt");
         lblStatus.setTextFill(Color.GREEN);
         writer.close();
     }

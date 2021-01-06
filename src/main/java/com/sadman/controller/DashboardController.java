@@ -22,6 +22,4 @@ public class DashboardController implements Initializable {
     public void closeAction(ActionEvent event) {
         Platform.exit();
     }
-
-
 }

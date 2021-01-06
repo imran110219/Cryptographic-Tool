@@ -99,7 +99,9 @@ public class MainController implements Initializable {
         }
         if(actionEvent.getSource()==btnEncrypt)
         {
-            pnlEncrypt.setStyle("-fx-background-color : #d9cd0f");
+            Pane encryptingPane =  FXMLLoader.load(getClass().getResource("/view/encrypting.fxml"));
+            pnlEncrypt.getChildren().setAll(encryptingPane);
+            pnlEncrypt.setStyle("-fx-background-color : #F1F0F6");
             pnlEncrypt.toFront();
         }
         if(actionEvent.getSource()==btnMail)

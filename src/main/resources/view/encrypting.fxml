@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="554.0" prefWidth="793.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.sadman.controller.EncryptingController">
+    <children>
+        <Label layoutX="23.0" layoutY="22.0" text="Select Type"/>
+        <ChoiceBox fx:id="cbType" layoutX="23.0" layoutY="47.0" prefHeight="25.0" prefWidth="92.0"/>
+        <Label fx:id="lblKeyType" layoutX="143.0" layoutY="22.0" text="Select Key"/>
+        <ChoiceBox fx:id="cbKey" layoutX="143.0" layoutY="47.0" prefHeight="25.0" prefWidth="125.0"/>
+        <Button layoutX="291.0" layoutY="47.0" mnemonicParsing="false" onAction="#doSelectFile" text="Select File"/>
+        <Label fx:id="lblStatus" layoutX="462.0" layoutY="52.0" text="Status"/>
+        <Button layoutX="744.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeAction" text="Close"/>
+        <Button layoutX="387.0" layoutY="48.0" mnemonicParsing="false" onAction="#doGenerate" text="Generate"/>
+    </children>
+</Pane>

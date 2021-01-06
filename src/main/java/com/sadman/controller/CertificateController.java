@@ -167,7 +167,7 @@ public class CertificateController implements Initializable {
         else {
             CertificateInfo selectedCertificate = certificateTable.getSelectionModel().getSelectedItem();
             PrivateKey privateKey = javaKeyStore.getPrivateKey(selectedCertificate.getAliasName(),"123456");
-            try(JcaPEMWriter pemWriter = new JcaPEMWriter(new FileWriter("privatekey.pem"))) {
+            try(JcaPEMWriter pemWriter = new JcaPEMWriter(new FileWriter("PrivateKey.pem"))) {
                 pemWriter.writeObject(privateKey);
             }
         }
